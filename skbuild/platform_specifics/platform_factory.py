@@ -2,8 +2,10 @@
 :class:`.abstract.CMakePlatform`."""
 
 import platform
+import sys
 
 from . import bsd
+from . import cygwin
 from . import linux
 from . import osx
 from . import windows
@@ -16,7 +18,9 @@ def get_platform():
 
     if this_platform == "windows":
         return windows.WindowsPlatform()
-    if this_platform == "linux":
+    elif sys.platform == "cygwin":
+        return cygwin.CygwinPlatform()
+    elif this_platform == "linux":
         return linux.LinuxPlatform()
     elif this_platform == "freebsd":
         return bsd.BSDPlatform()
