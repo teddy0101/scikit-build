@@ -8,6 +8,41 @@ details, see the commit logs at http://github.com/scikit-build/scikit-build
 Next Release
 ============
 
+Bug fixes
+---------
+
+* Fixed a regression that caused setuptools to complain about unknown setup option
+  (`cmake_process_manifest_hook`).
+
+Documentation
+-------------
+
+* Update `Conda: Step-by-step` release guide available in :doc:`/make_a_release` section.
+* Update links to CMake documentation pages in :doc:/`generators`.
+
+Tests
+-----
+
+* Fix linting error `F522 <https://flake8.pycqa.org/en/latest/user/error-codes.html>`_ reported with flake8 >= 3.8.x. Thanks :user:`benbovy` for the contribution. See :issue:`494`.
+
+Scikit-build 0.11.1
+===================
+
+Bug fixes
+---------
+
+* Support using scikit-build with conan where ``distro<1.2.0`` is required.
+  Thanks :user:`AntoinePrv` and :user:`Chrismarsh` for reporting issue :issue:`472`
+  and :issue:`488`.
+
+Documentation
+-------------
+
+* Fix link in `Conda: Step-by-step` release guide available in :doc:`/make_a_release` section.
+
+Scikit-build 0.11.0
+===================
+
 New Features
 ------------
 
@@ -73,11 +108,6 @@ Documentation
 
 Tests
 -----
-
-* Continuous Integration
-
-  * Update Azure Pipelines configuration for running tests using `PyPy3 <https://pypy.org/>`_ on Linux.
-    Thanks :user:`mattip` for the contribution. See :issue:`418`.
 
 * Update :func:`initialize_git_repo_and_commit` to prevent signing message on system with commit signing
   enabled globally.

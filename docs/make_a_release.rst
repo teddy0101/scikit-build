@@ -93,7 +93,7 @@ Setting up environment
       expression: ``^[0-9]+(\.[0-9]+)*(\.post[0-9]+)?$``.
 
 
-5. In `README.rst`, update `PyPI`_ download count after running `this big table query <https://bigquery.cloud.google.com/savedquery/280188050539:cab173ea774643c49e6f8f26234a3b08>`_
+5. In `README.rst`, update `PyPI`_ download count after running `this big table query <https://console.cloud.google.com/bigquery?sq=280188050539:6571a5b49fd1426395e4beea055d2b1b>`_
    and commit the changes.
 
   .. code::
@@ -235,7 +235,7 @@ conda-forge, follow the steps below:
 2. Fork scikit-build-feedstock
 
  First step is to fork `scikit-build-feedstock`_ repository.
- This is the recommended `best practice <https://conda-forge.org/docs/conda-forge_gotchas.html#using-a-fork-vs-a-branch-when-updating-a-recipe>`_  by conda.
+ This is the recommended `best practice <https://conda-forge.org/docs/maintainer/updating_pkgs.html>`_  by conda.
 
 
 3. Clone forked feedstock
@@ -244,7 +244,8 @@ conda-forge, follow the steps below:
 
    .. code::
 
-      $ cd /tmp && git clone https://github.com/YOURGITHUBUSER/scikit-build-feedstock.git
+      $ YOURGITHUBUSER=user
+      $ cd /tmp && git clone https://github.com/$YOURGITHUBUSER/scikit-build-feedstock.git
 
 
 4. Download corresponding source for the release version
@@ -252,7 +253,8 @@ conda-forge, follow the steps below:
   .. code::
 
     $ cd /tmp && \
-      wget https://github.com/NeurodataWithoutBorders/scikit-build/releases/download/$release/scikit-build-$release.tar.gz
+      wget https://github.com/scikit-build/scikit-build/archive/$release.tar.gz
+
 
 5. Create a new branch
 
@@ -273,18 +275,24 @@ conda-forge, follow the steps below:
 
    .. code::
 
-      $ sed -i "2s/.*/{% set version = \"$release\" %}/" recipe/meta.yaml
-      $ sha=$(openssl sha256 /tmp/scikit-build-$release.tar.gz | awk '{print $2}')
-      $ sed -i "3s/.*/{$ set sha256 = \"$sha\" %}/" recipe/meta.yaml
+      $ sed -i "1s/.*/{% set version = \"$release\" %}/" recipe/meta.yaml && \
+        sha=$(openssl sha256 /tmp/$release.tar.gz | awk '{print $2}') && \
+        sed -i "2s/.*/{% set sha256 = \"$sha\" %}/" recipe/meta.yaml
 
    For macOS:
 
    .. code::
 
-      $ sed -i -- "2s/.*/{% set version = \"$release\" %}/" recipe/meta.yaml
-      $ sha=$(openssl sha256 /tmp/scikit-build-$release.tar.gz | awk '{print $2}')
-      $ sed -i -- "3s/.*/{$ set sha256 = \"$sha\" %}/" recipe/meta.yaml
+      $ sed -i -- "1s/.*/{% set version = \"$release\" %}/" recipe/meta.yaml && \
+        sha=$(openssl sha256 /tmp/$release.tar.gz | awk '{print $2}') && \
+        sed -i -- "2s/.*/{% set sha256 = \"$sha\" %}/" recipe/meta.yaml
 
+   Commit local changes.
+
+   .. code::
+
+      $ git add recipe/meta.yaml && \
+          git commit -m "scikit-build v$release version"
 
 
 7. Push the changes
